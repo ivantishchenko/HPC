@@ -1,0 +1,2 @@
+scp -P 8022 -r HPC/ itishchenko@access-gaia.uni.lu:/home/users/itishchenko
+oarcp -r HPC/ gaia-144:/home/users/itishchenko

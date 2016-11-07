@@ -1,0 +1,5 @@
+gnuplot -persistent
+
+set title \"TITLEEEEE\"
+
+plot 'plotData.txt' using 1:2 title 'max' w linespoints, 'plotData.txt' using 1:3 title 'avr' w linespoints, 'plotData.txt' using 1:4 title 'min' w linespoints
