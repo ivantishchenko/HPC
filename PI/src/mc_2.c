@@ -25,7 +25,9 @@ int main (int argc, char ** argv) {
 	const double e = 0.001f;
 	//time_t t;
 	FILE* fp;
-	fp = fopen("data_circle.txt", "a");
+	FILE* fp1;
+	fp = fopen("data_circle_in.txt", "a");
+	fp1 = fopen("data_circle_out.txt", "a");
 	srand(SEED); 
 	do {
 		n++;
@@ -37,13 +39,14 @@ int main (int argc, char ** argv) {
 		if (z <= 1) {
 			count++;
 			//inside a circle
-			fprintf(fp, "%d %f %f\n", 1, x, y);
+			fprintf(fp, "%d %f %f\n", x, y);
 		}
 		//outside of a circle
-		else fprintf(fp, "%d %f %f\n", 0, x, y);
+		else fprintf(fp1, "%d %f %f\n", x, y);
 	} while (e < ( 1 / ((double)2 * sqrt(n))));
 
 	my_pi = ((double)count / (double)n) * 4.0;
 	fclose(fp);
+	fclose(fp1);
 	printf("Calculated PI = %.17f, Error is %.17f\n", my_pi, fabs(my_pi - PI));
 }
