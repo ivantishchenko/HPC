@@ -53,11 +53,12 @@ int main(int argc, char ** argv) {
 	
 	local_pi = h * sum;
 
+	elapsed_time += MPI_Wtime();
 	// sum up local PIs to a gloabl PI
 	MPI_Reduce(&local_pi, &global_pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
 	// at the end, compute elapsed time
-	elapsed_time += MPI_Wtime();
+	
 	MPI_Reduce(&elapsed_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
 	MPI_Reduce(&elapsed_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 	MPI_Reduce(&elapsed_time, &avg_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
