@@ -14,7 +14,7 @@ Purpose: Calculates the PI
 int id = 0;
 
 int main(int argc, char ** argv) {
-	int n, p;
+	int n;
 	double my_pi, h, sum, x;
 
 	printf("Intervals: ");

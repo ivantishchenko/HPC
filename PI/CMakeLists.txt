@@ -24,7 +24,7 @@ set(CMAKE_CXX_FLAGS   "${CMAKE_CXX_FLAGS} ${MPI_C_COMPILE_FLAGS}")
 include_directories(SYSTEM ${MPI_C_INCLUDE_PATH})
 list(APPEND EXTRALIBS ${MPI_C_LIBRARIES})
 
-#==== Let's go
+#==== PI 
 add_executable(pi_1  src/pi_1.c)
 target_link_libraries(pi_1     ${EXTRALIBS})
 
@@ -32,4 +32,20 @@ add_executable(pi_2  src/pi_2.c)
 target_link_libraries(pi_2     ${EXTRALIBS})
 
 add_executable(pi_3  src/pi_3.c)
-target_link_libraries(pi_2     ${EXTRALIBS})
+target_link_libraries(pi_3     ${EXTRALIBS})
+
+#==== Simpson
+add_executable(sim_1  src/sim_1.c)
+target_link_libraries(sim_1     ${EXTRALIBS})
+
+add_executable(sim_2  src/sim_2.c)
+target_link_libraries(sim_2     ${EXTRALIBS})
+
+add_executable(sim_3  src/sim_3.c)
+target_link_libraries(sim_3     ${EXTRALIBS})
+
+#==== Monte carlo
+add_executable(mc_1  src/mc_1.c)
+
+add_executable(mc_3 src/mc_3.c)
+target_link_libraries(mc_3     ${EXTRALIBS})

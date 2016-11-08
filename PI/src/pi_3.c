@@ -1,6 +1,6 @@
 /*
 Parallel and GRID computing
-pi_2.c
+pi_3.c
 Purpose: Calculates the PI and calculate the time
 
 @author Ivan Tishchenko
@@ -26,6 +26,8 @@ void xprintf(char *format, ...) {
 int main(int argc, char ** argv) {
 	int n, p;
 	double local_pi, global_pi, h, sum, x;
+	double elapsed_time = 0.0;
+	double min_time, max_time, avg_time;
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
@@ -35,7 +37,8 @@ int main(int argc, char ** argv) {
 		xprintf("Intervals: ");
 		scanf("%d", &n);
 	}
-
+	MPI_Barrier(MPI_COMM_WORLD);
+	elapsed_time = -MPI_Wtime();
 	// each process would get a number of intervals
 	MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	if (n == 0) return;
@@ -53,9 +56,27 @@ int main(int argc, char ** argv) {
 	// sum up local PIs to a gloabl PI
 	MPI_Reduce(&local_pi, &global_pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
-	if (id == 0)
-		xprintf("Calculated PI = %.17f, Error is %.17f\n", global_pi, fabs(global_pi - PI));
+	// at the end, compute elapsed time
+	elapsed_time += MPI_Wtime();
+	MPI_Reduce(&elapsed_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&elapsed_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&elapsed_time, &avg_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
+	if (id == 0) {
+		xprintf("Calculated PI = %.17f, Error is %.17f\n", global_pi, fabs(global_pi - PI));
+		xprintf("Elapsed time: %2f s\n", elapsed_time);
+
+		FILE *fp;
+
+		avg_time /= p;
+		xprintf("Elapsed time MAX: %f s\n", max_time);
+		xprintf("Elapsed time MIN: %f s\n", min_time);
+		xprintf("Elapsed time AVG: %f s\n", avg_time);
+
+		fp = fopen("data.txt", "a");
+		fprintf(fp, "%d %f %f %f\n", p, max_time, min_time, avg_time);
+		fclose(fp);
+	}
 	MPI_Finalize();
 	return 0;
 }
