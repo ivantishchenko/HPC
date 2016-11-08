@@ -18,7 +18,6 @@ Purpose: Calculates the PI Monte carlo
 int main (int argc, char ** argv) {
 	int n = 0;
 	double x, y;
-	int i;
 	int count = 0;
 	double z;
 	double my_pi;
