@@ -1,3 +1,11 @@
+/*
+Parallel and GRID computing
+mc_4.c
+Purpose: Calculates the PI Monte carlo + time 
+
+@author Ivan Tishchenko
+@version 1.0
+*/
 #include <stdio.h>     /* for printf */
 #include <stdlib.h>    /* for exit  */
 #include <stdarg.h>    /* for va_{list,args... */
@@ -23,16 +31,21 @@ void xprintf(char *format, ...) {
 
 int main(int argc, char ** argv) {
 	int p;
-	MPI_Init(&argc, &argv);
-	MPI_Comm_size(MPI_COMM_WORLD, &p);
-	MPI_Comm_rank(MPI_COMM_WORLD, &id);
-
 	double elapsed_time = 0.0;
 	double my_pi;
 	double e = 0.001;
 	double points[N_INTERVAL];
 	double min_time, max_time, avg_time;
-	
+
+	MPI_Init(&argc, &argv);
+	MPI_Comm_size(MPI_COMM_WORLD, &p);
+	MPI_Comm_rank(MPI_COMM_WORLD, &id);
+
+	if (p < 2) {
+		xprintf("Please enter at least 2 processes");
+		return;
+	}
+
 	MPI_Barrier(MPI_COMM_WORLD);
 	elapsed_time = -MPI_Wtime();
 
@@ -105,7 +118,7 @@ int main(int argc, char ** argv) {
 		xprintf("Elapsed time MIN: %f s\n", min_time);
 		xprintf("Elapsed time AVG: %f s\n", avg_time);
 
-		fp = fopen("data.txt", "a");
+		fp = fopen("data_monte.txt", "a");
 		fprintf(fp, "%d %f %f %f\n", p, max_time, min_time, avg_time);
 		fclose(fp);
 	}

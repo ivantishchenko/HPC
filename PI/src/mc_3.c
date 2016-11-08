@@ -1,3 +1,11 @@
+/*
+Parallel and GRID computing
+mc_3.c
+Purpose: Calculates the PI Monte carlo MPI
+
+@author Ivan Tishchenko
+@version 1.0
+*/
 #include <stdio.h>     /* for printf */
 #include <stdlib.h>    /* for exit  */
 #include <stdarg.h>    /* for va_{list,args... */
@@ -23,15 +31,20 @@ void xprintf(char *format, ...) {
 
 int main(int argc, char ** argv) {
 	int p;
-
-	MPI_Init(&argc, &argv);
-	MPI_Comm_size(MPI_COMM_WORLD, &p);
-	MPI_Comm_rank(MPI_COMM_WORLD, &id);
 	double elapsed_time = 0.0;
 	double my_pi;
 	double e = 0.001;
 	double points[N_INTERVAL];
-	
+
+	MPI_Init(&argc, &argv);
+	MPI_Comm_size(MPI_COMM_WORLD, &p);
+	MPI_Comm_rank(MPI_COMM_WORLD, &id);
+
+	if ( p < 2 ) {
+		xprintf("Please enter at least 2 processes");
+		return;
+	}
+
 	// GROUPS
 	MPI_Group world_group;
 	MPI_Group workers;

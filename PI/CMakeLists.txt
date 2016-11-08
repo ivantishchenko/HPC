@@ -47,6 +47,8 @@ target_link_libraries(sim_3     ${EXTRALIBS})
 #==== Monte carlo
 add_executable(mc_1  src/mc_1.c)
 
+add_executable(mc_2  src/mc_2.c)
+
 add_executable(mc_3 src/mc_3.c)
 target_link_libraries(mc_3     ${EXTRALIBS})
 

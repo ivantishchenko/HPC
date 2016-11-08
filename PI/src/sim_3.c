@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 		xprintf("Elapsed time MIN: %f s\n", min_time);
 		xprintf("Elapsed time AVG: %f s\n", avg_time);
 		FILE* fp;
-		fp = fopen("data.txt", "a");
+		fp = fopen("data_sim.txt", "a");
 		fprintf(fp, "%d %f %f %f\n", p, max_time, min_time, avg_time);
 		fclose(fp);
 	}
