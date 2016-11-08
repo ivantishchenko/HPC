@@ -39,10 +39,10 @@ int main (int argc, char ** argv) {
 		if (z <= 1) {
 			count++;
 			//inside a circle
-			fprintf(fp, "%d %f %f\n", x, y);
+			fprintf(fp, "%f %f\n", x, y);
 		}
 		//outside of a circle
-		else fprintf(fp1, "%d %f %f\n", x, y);
+		else fprintf(fp1, "%f %f\n", x, y);
 	} while (e < ( 1 / ((double)2 * sqrt(n))));
 
 	my_pi = ((double)count / (double)n) * 4.0;
