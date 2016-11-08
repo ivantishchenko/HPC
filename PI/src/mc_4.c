@@ -23,15 +23,19 @@ void xprintf(char *format, ...) {
 
 int main(int argc, char ** argv) {
 	int p;
-
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 	MPI_Comm_rank(MPI_COMM_WORLD, &id);
+
 	double elapsed_time = 0.0;
 	double my_pi;
 	double e = 0.001;
 	double points[N_INTERVAL];
+	double min_time, max_time, avg_time;
 	
+	MPI_Barrier(MPI_COMM_WORLD);
+	elapsed_time = -MPI_Wtime();
+
 	// GROUPS
 	MPI_Group world_group;
 	MPI_Group workers;
@@ -41,14 +45,12 @@ int main(int argc, char ** argv) {
 	MPI_Group_excl(world_group, 1, ranks, &workers);
 
 	MPI_Comm work_comm;
-
 	MPI_Comm_create(MPI_COMM_WORLD, workers, &work_comm);
 
 	// if generator node
 	if (id == p - 1) {
 		int request_workers = 1;
 		int number;
-
 		srand(SEED);
 		while (request_workers) {
 			MPI_Status status;
@@ -89,7 +91,24 @@ int main(int argc, char ** argv) {
 
 	}
 
+	// at the end, compute elapsed time
+	elapsed_time += MPI_Wtime();
+	MPI_Reduce(&elapsed_time, &min_time, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&elapsed_time, &max_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+	MPI_Reduce(&elapsed_time, &avg_time, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
+	if (id == 0) {
+		FILE *fp;
+
+		avg_time /= p;
+		xprintf("Elapsed time MAX: %f s\n", max_time);
+		xprintf("Elapsed time MIN: %f s\n", min_time);
+		xprintf("Elapsed time AVG: %f s\n", avg_time);
+
+		fp = fopen("data.txt", "a");
+		fprintf(fp, "%d %f %f %f\n", p, max_time, min_time, avg_time);
+		fclose(fp);
+	}
 
 	MPI_Finalize();
 	return 0;
