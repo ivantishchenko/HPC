@@ -12,7 +12,7 @@ Purpose: Calculates the PI Monte carlo
 #include <stdlib.h>
 #include <time.h>
 
-#define SEED 35791246
+#define SEED 43682354
 #define PI 3.141592653589793238462643
 
 int main (int argc, char ** argv) {

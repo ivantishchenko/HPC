@@ -15,7 +15,7 @@ Purpose: Calculates the PI Monte carlo MPI
 
 #define N_INTERVAL 1000
 
-#define SEED 35791246
+#define SEED 43682354
 #define PI 3.141592653589793238462643
 
 
