@@ -9,7 +9,7 @@ Purpose: Calculates the PI
 #include <math.h>
 #include <stdio.h>
 
-#define PI 3.141592653589793238462643
+//#define PI 3.141592653589793238462643
 
 double func_integer(double x) {
 	return 4.0 / (1.0 + x * x);
@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
 	int n;
 	double total;
 	double my_pi, y, x1, x2, l, sum;
+	double e = 2 / (3. * n * n);
 
 	printf("Intervals: ");
 	scanf("%d", &n);
@@ -44,6 +45,6 @@ int main(int argc, char *argv[]) {
 
 	sum += (func_integer(x1) + func_integer(x2)) / 2.0;
 	my_pi = sum * 2.0 * l / 3.0;
-	printf("Calculated PI = %.17f, Error is %.17f\n", my_pi, fabs(my_pi - PI));
+	printf("Calculated PI = %.17f, Error is %.17f\n", my_pi, e);
 	return 0;
 }

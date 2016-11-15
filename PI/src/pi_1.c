@@ -9,13 +9,13 @@ Purpose: Calculates the PI
 #include <math.h>
 #include <stdio.h>
 
-#define PI 3.141592653589793238462643
+//#define PI 3.141592653589793238462643
 
 int id = 0;
 
 int main(int argc, char ** argv) {
 	int n;
-	double my_pi, h, sum, x;
+	double my_pi, h, sum, x, e;
 
 	printf("Intervals: ");
 	scanf("%d", &n);
@@ -30,7 +30,9 @@ int main(int argc, char ** argv) {
 
 	my_pi = h * sum;
 
-	printf("Calculated PI = %.17f, Error is %.17f\n", my_pi, fabs(my_pi - PI));
+	e = 2 / (3. * n * n);
+
+	printf("Calculated PI = %.17f, Error is %.17f\n", my_pi, e);
 
 	return 0;
 }
